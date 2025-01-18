@@ -66,22 +66,25 @@ body, header h2, header h1, main h2 {
     font-weight: normal;
 }
 
-/* Default (light theme) styles */
 body {
     background-color: white;
     color: black;
 }
 
-/* Dark theme styles */
 body.dark {
-    background-color: #333;
+    background-color: #333 !important;
+    color: white;
+}
+
+body.dark .container {
+    background-color: #444 !important;
     color: white;
 }
 
 .dark h2 {
-    color: #006EB6; /* Adjust this for better contrast */
+    color: #006EB6;
 }
 
 .dark .logo {
-    content: url('byui-logo_white.webp'); /* Update logo to the white version */
+    content: url('byui-logo_white.png'); 
 }
