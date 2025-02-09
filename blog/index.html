@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Book Review Blog">
+    <meta name="author" content="Lucy Haskew">
+    <title>Book Review Blog</title>
+    <link rel="stylesheet" href="blog.css">
+    <script defer src="blog.js"></script>
+</head>
+<body>
+    <header>
+        <div class="skiptocontent">
+            <a href="#maincontent">Skip to Main Content</a>
+        </div>
+
+        <h1>Kids Read For Fun</h1>
+        <nav>
+            <ul>
+                <li><a href="#">About</a></li>
+                <li><a href="#">Archive</a></li>
+                <li><a href="#">Search</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main id="maincontent">
+        <section id="reviews"></section>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 Lucy Haskew. All Rights Reserved.</p>
+    </footer>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const reviewsContainer = document.getElementById("reviews");
+
+            articles.forEach((article, index) => {
+                const review = document.createElement("article");
+                review.classList.add("review");
+
+                review.innerHTML = `
+                    <div class="review-left">
+                        <p>${article.date}</p>
+                        <p>${article.ages}</p>
+                        <p>${article.genre}</p>
+                        <p>${article.stars}</p>
+                    </div>
+                    <div class="review-middle">
+                        <h2>${article.title}</h2>
+                        <img src="${article.imgSrc}" alt="${article.imgAlt}">
+                        <p>${article.description} <a href="#">Read More...</a></p>
+                    </div>
+                    <div class="review-right">
+                        ${index === 0 ? '<p>Filter form will go here</p>' : ''} <!-- Shows only for the first book -->
+                    </div>
+                `;
+
+                reviewsContainer.appendChild(review);
+            });
+        });
+    </script>
+</body>
+</html>
