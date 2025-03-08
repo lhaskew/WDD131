@@ -104,8 +104,8 @@ h1 {
 
 .recipe-image {
     width: 100%;
-    display: block;
-    object-fit: cover;
+    max-width: 400px;
+    height: auto;
 }
 
 .recipe-details {
