@@ -23,16 +23,17 @@ function ratingTemplate(rating) {
 
 function recipeTemplate(recipe) {
     return `
-    <figure class="recipe">
-        <img src="${recipe.image}" alt="Image of ${recipe.name}" class="recipe-image" />
-        <figcaption>
-            <ul class="recipe__tags">${tagsTemplate(recipe.tags)}</ul>
-            <h2><a href="#">${recipe.name}</a></h2>
-            <p class="recipe__ratings">${ratingTemplate(recipe.rating)}</p>
-            <p class="recipe__description">${recipe.description}</p>
-        </figcaption>
-    </figure>`;
+    <div class="recipe-card">
+        <img src="${recipe.image}" alt="${recipe.name}" class="recipe-image">
+        <div class="recipe-details">
+            <div class="recipe__tags">${tagsTemplate(recipe.tags)}</div>
+            <h2 class="recipe-title">${recipe.name}</h2>
+            <p class="rating">${ratingTemplate(recipe.rating)}</p>
+            <p class="recipe-description">${recipe.description}</p>
+        </div>
+    </div>`;
 }
+
 
 function renderRecipes(recipeList) {
     const recipeContainer = document.getElementById("recipe-list");
