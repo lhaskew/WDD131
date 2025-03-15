@@ -1,30 +1,83 @@
-document.addEventListener("DOMContentLoaded", () => {
-    const recipeList = document.getElementById("recipe-list");
+import recipes from './recipes.mjs';
 
-    const recipe = {
-        name: "Apple Crisp",
-        image: "images/apple-crisp.jpg",
-        tags: ["dessert", "tag2"],
-        rating: 4,
-        description: "This apple crisp recipe is a simple yet delicious fall dessert that's great served warm with vanilla ice cream."
-    };
+function random(num) {
+    return Math.floor(Math.random() * num);
+}
 
-    const recipeCard = document.createElement("div");
-    recipeCard.classList.add("recipe-card");
+function getRandomListEntry(list) {
+    return list[random(list.length)];
+}
 
-    recipeCard.innerHTML = `
-        <img src="${recipe.image}" alt="${recipe.name}" class="recipe-image">
-        <div class="recipe-details">
-            <div class="tags">
-                ${recipe.tags.map(tag => `<span class="tag">${tag}</span>`).join('')}
-            </div>
-            <h2 class="recipe-title">${recipe.name}</h2>
-            <span class="rating" role="img" aria-label="Rating: ${recipe.rating} out of 5 stars">
-                ${"⭐".repeat(recipe.rating)}${"☆".repeat(5 - recipe.rating)}
-            </span>
-            <p class="recipe-description">${recipe.description}</p>
-        </div>
-    `;
+function tagsTemplate(tags) {
+    return tags.map(tag => `<li class="tag">${tag}</li>`).join('');
+}
 
-    recipeList.appendChild(recipeCard);
-});
+function ratingTemplate(rating) {
+    let html = `<span class="rating" role="img" aria-label="Rating: ${rating} out of 5 stars">`;
+    for (let i = 1; i <= 5; i++) {
+        html += i <= rating ? `<span class="icon-star">⭐</span>` : `<span class="icon-star-empty">☆</span>`;
+    }
+    html += `</span>`;
+    return html;
+}
+
+function recipeTemplate(recipe) {
+    return `
+    <figure class="recipe">
+        <img src="${recipe.image}" alt="Image of ${recipe.name}" class="recipe-image" />
+        <figcaption>
+            <ul class="recipe__tags">${tagsTemplate(recipe.tags)}</ul>
+            <h2><a href="#">${recipe.name}</a></h2>
+            <p class="recipe__ratings">${ratingTemplate(recipe.rating)}</p>
+            <p class="recipe__description">${recipe.description}</p>
+        </figcaption>
+    </figure>`;
+}
+
+function renderRecipes(recipeList) {
+    const recipeContainer = document.getElementById("recipe-list");
+    if (!recipeContainer) {
+        console.error("Element with ID 'recipe-list' not found.");
+        return;
+    }
+    recipeContainer.innerHTML = recipeList.map(recipeTemplate).join('');
+}
+
+function init() {
+    const recipe = getRandomListEntry(recipes);
+    renderRecipes([recipe]);
+}
+
+function filterRecipes(query) {
+    query = query.toLowerCase();
+    return recipes.filter(recipe =>
+        recipe.name.toLowerCase().includes(query) ||
+        recipe.description.toLowerCase().includes(query) ||
+        recipe.tags.some(tag => tag.toLowerCase().includes(query)) ||
+        recipe.recipeIngredient.some(ingredient => ingredient.toLowerCase().includes(query))
+    ).sort((a, b) => a.name.localeCompare(b.name));
+}
+
+function searchHandler(event) {
+    event.preventDefault();
+    const searchInput = document.getElementById("search-input");
+    if (!searchInput) {
+        console.error("Search input not found.");
+        return;
+    }
+    const query = searchInput.value.trim();
+    if (query) {
+        renderRecipes(filterRecipes(query));
+    } else {
+        init();
+    }
+}
+
+init();
+
+const searchButton = document.getElementById("search-button");
+if (searchButton) {
+    searchButton.addEventListener("click", searchHandler);
+} else {
+    console.error("Search button not found.");
+}
